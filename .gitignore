@@ -1,0 +1,25 @@
+# Certificates and secrets
+certs/
+.env
+.env.*
+
+# Go build outputs
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test / coverage
+*.test
+*.out
+coverage.out
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
