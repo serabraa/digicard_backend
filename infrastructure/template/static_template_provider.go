@@ -104,6 +104,7 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"teamIdentifier":     p.teamID,
 		"organizationName":   p.organizationName,
 		"description":        "Digital business card",
+		"logoText":           p.organizationName,
 		"backgroundColor":    p.backgroundColor,
 		"labelColor":         p.labelColor,
 		"foregroundColor":    p.foregroundColor,
