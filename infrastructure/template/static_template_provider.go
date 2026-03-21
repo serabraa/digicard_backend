@@ -45,17 +45,29 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		},
 	}
 
+	secondaryFields := make([]map[string]any, 0, 2)
+
 	if card.Title != "" {
-		generic["secondaryFields"] = []map[string]any{
-			{
-				"key":   "title",
-				"label": "",
-				"value": card.Title,
-			},
-		}
+		secondaryFields = append(secondaryFields, map[string]any{
+			"key":   "title",
+			"label": "",
+			"value": card.Title,
+		})
 	}
 
-	auxiliaryFields := make([]map[string]any, 0, 2)
+	if card.Company != "" {
+		secondaryFields = append(secondaryFields, map[string]any{
+			"key":   "company",
+			"label": "",
+			"value": card.Company,
+		})
+	}
+
+	if len(secondaryFields) > 0 {
+		generic["secondaryFields"] = secondaryFields
+	}
+
+	auxiliaryFields := make([]map[string]any, 0, 3)
 
 	if card.Email != "" {
 		auxiliaryFields = append(auxiliaryFields, map[string]any{
@@ -73,30 +85,16 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		})
 	}
 
-	if len(auxiliaryFields) > 0 {
-		generic["auxiliaryFields"] = auxiliaryFields
-	}
-
-	backFields := make([]map[string]any, 0, 2)
-
-	if card.Company != "" {
-		backFields = append(backFields, map[string]any{
-			"key":   "company",
-			"label": "Company",
-			"value": card.Company,
-		})
-	}
-
 	if card.Website != "" {
-		backFields = append(backFields, map[string]any{
+		auxiliaryFields = append(auxiliaryFields, map[string]any{
 			"key":   "website",
 			"label": "Website",
 			"value": card.Website,
 		})
 	}
 
-	if len(backFields) > 0 {
-		generic["backFields"] = backFields
+	if len(auxiliaryFields) > 0 {
+		generic["auxiliaryFields"] = auxiliaryFields
 	}
 
 	payload := map[string]any{
