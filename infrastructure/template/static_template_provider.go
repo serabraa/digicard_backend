@@ -35,6 +35,70 @@ func NewStaticTemplateProvider(
 }
 
 func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) ([]byte, error) {
+	generic := map[string]any{
+		"primaryFields": []map[string]any{
+			{
+				"key":   "name",
+				"label": "",
+				"value": card.FullName,
+			},
+		},
+	}
+
+	if card.Title != "" {
+		generic["secondaryFields"] = []map[string]any{
+			{
+				"key":   "title",
+				"label": "",
+				"value": card.Title,
+			},
+		}
+	}
+
+	auxiliaryFields := make([]map[string]any, 0, 2)
+
+	if card.Email != "" {
+		auxiliaryFields = append(auxiliaryFields, map[string]any{
+			"key":   "email",
+			"label": "Email",
+			"value": card.Email,
+		})
+	}
+
+	if card.Phone != "" {
+		auxiliaryFields = append(auxiliaryFields, map[string]any{
+			"key":   "phone",
+			"label": "Phone",
+			"value": card.Phone,
+		})
+	}
+
+	if len(auxiliaryFields) > 0 {
+		generic["auxiliaryFields"] = auxiliaryFields
+	}
+
+	backFields := make([]map[string]any, 0, 2)
+
+	if card.Company != "" {
+		backFields = append(backFields, map[string]any{
+			"key":   "company",
+			"label": "Company",
+			"value": card.Company,
+		})
+	}
+
+	if card.Website != "" {
+		backFields = append(backFields, map[string]any{
+			"key":   "website",
+			"label": "Website",
+			"value": card.Website,
+		})
+	}
+
+	if len(backFields) > 0 {
+		generic["backFields"] = backFields
+	}
+
 	payload := map[string]any{
 		"formatVersion":      1,
 		"passTypeIdentifier": p.passTypeID,
@@ -45,28 +109,7 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"backgroundColor":    p.backgroundColor,
 		"labelColor":         p.labelColor,
 		"foregroundColor":    p.foregroundColor,
-		"generic": map[string]any{
-			"primaryFields": []map[string]any{
-				{
-					"key":   "name",
-					"label": "Name",
-					"value": card.FullName,
-				},
-			},
-			"secondaryFields": []map[string]any{
-				{
-					"key":   "title",
-					"label": "Title",
-					"value": card.Title,
-				},
-				{
-					"key":   "company",
-					"label": "Company",
-					"value": card.Company,
-				},
-			},
-			"auxiliaryFields": buildAuxiliaryFields(card),
-		},
+		"generic":            generic,
 	}
 
 	return json.MarshalIndent(payload, "", "  ")
