@@ -8,7 +8,6 @@ type Config struct {
 	Port                string
 	AssetsDir           string
 	Organization        string
-	LogoText            string
 	PassTypeID          string
 	TeamID              string
 	BackgroundRGB       string
@@ -24,7 +23,6 @@ func Load() Config {
 		Port:          getEnv("PORT", "8080"),
 		AssetsDir:     getEnv("ASSETS_DIR", "assets/wallet"),
 		Organization:  getEnv("ORGANIZATION_NAME", "UstaDev"),
-		LogoText:      getEnv("LOGO_TEXT", "DigiCard"),
 		PassTypeID:    getEnv("PASS_TYPE_ID", ""),
 		TeamID:        getEnv("TEAM_ID", ""),
 		BackgroundRGB: getEnv("BACKGROUND_COLOR", "rgb(255,255,255)"),

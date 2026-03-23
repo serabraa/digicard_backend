@@ -9,7 +9,6 @@ import (
 
 type StaticTemplateProvider struct {
 	organizationName string
-	logoText         string
 	passTypeID       string
 	teamID           string
 	backgroundColor  string
@@ -19,7 +18,6 @@ type StaticTemplateProvider struct {
 
 func NewStaticTemplateProvider(
 	organizationName string,
-	logoText string,
 	passTypeID string,
 	teamID string,
 	backgroundColor string,
@@ -28,7 +26,6 @@ func NewStaticTemplateProvider(
 ) *StaticTemplateProvider {
 	return &StaticTemplateProvider{
 		organizationName: organizationName,
-		logoText:         logoText,
 		passTypeID:       passTypeID,
 		teamID:           teamID,
 		backgroundColor:  backgroundColor,
@@ -109,7 +106,7 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"teamIdentifier":     p.teamID,
 		"organizationName":   p.organizationName,
 		"description":        "Digital business card",
-		"logoText":           p.logoText,
+		"logoText":           card.LogoText,
 		"backgroundColor":    p.backgroundColor,
 		"labelColor":         p.labelColor,
 		"foregroundColor":    p.foregroundColor,

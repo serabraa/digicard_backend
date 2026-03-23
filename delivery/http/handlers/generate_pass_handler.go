@@ -33,6 +33,7 @@ func (h *GeneratePassHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		req.FullName,
 		req.Title,
 		req.Company,
+		req.LogoText,
 		req.Email,
 		req.Phone,
 		req.Website,
