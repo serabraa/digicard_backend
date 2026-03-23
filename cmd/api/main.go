@@ -31,6 +31,7 @@ func main() {
 
 	templateProvider := template.NewStaticTemplateProvider(
 		cfg.Organization,
+		cfg.LogoText,
 		cfg.PassTypeID,
 		cfg.TeamID,
 		cfg.BackgroundRGB,
