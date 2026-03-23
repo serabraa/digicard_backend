@@ -9,6 +9,7 @@ import (
 
 type StaticTemplateProvider struct {
 	organizationName string
+	logoText         string
 	passTypeID       string
 	teamID           string
 	backgroundColor  string
@@ -18,6 +19,7 @@ type StaticTemplateProvider struct {
 
 func NewStaticTemplateProvider(
 	organizationName string,
+	logoText string,
 	passTypeID string,
 	teamID string,
 	backgroundColor string,
@@ -26,6 +28,7 @@ func NewStaticTemplateProvider(
 ) *StaticTemplateProvider {
 	return &StaticTemplateProvider{
 		organizationName: organizationName,
+		logoText:         logoText,
 		passTypeID:       passTypeID,
 		teamID:           teamID,
 		backgroundColor:  backgroundColor,
@@ -35,26 +38,29 @@ func NewStaticTemplateProvider(
 }
 
 func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) ([]byte, error) {
-	generic := map[string]any{
-		"primaryFields": []map[string]any{
-			{
-				"key":   "name",
-				"label": "",
-				"value": card.FullName,
-			},
-		},
-	}
+	generic := map[string]any{}
 
-	secondaryFields := make([]map[string]any, 0, 2)
-
+	headerFields := make([]map[string]any, 0, 1)
 	if card.Title != "" {
-		secondaryFields = append(secondaryFields, map[string]any{
+		headerFields = append(headerFields, map[string]any{
 			"key":   "title",
 			"label": "",
 			"value": card.Title,
 		})
 	}
+	if len(headerFields) > 0 {
+		generic["headerFields"] = headerFields
+	}
 
+	generic["primaryFields"] = []map[string]any{
+		{
+			"key":   "name",
+			"label": "",
+			"value": card.FullName,
+		},
+	}
+
+	secondaryFields := make([]map[string]any, 0, 1)
 	if card.Company != "" {
 		secondaryFields = append(secondaryFields, map[string]any{
 			"key":   "company",
@@ -62,7 +68,6 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 			"value": card.Company,
 		})
 	}
-
 	if len(secondaryFields) > 0 {
 		generic["secondaryFields"] = secondaryFields
 	}
@@ -104,7 +109,7 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"teamIdentifier":     p.teamID,
 		"organizationName":   p.organizationName,
 		"description":        "Digital business card",
-		"logoText":           p.organizationName,
+		"logoText":           p.logoText,
 		"backgroundColor":    p.backgroundColor,
 		"labelColor":         p.labelColor,
 		"foregroundColor":    p.foregroundColor,

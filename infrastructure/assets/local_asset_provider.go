@@ -17,8 +17,10 @@ func NewLocalAssetProvider(dir string) *LocalAssetProvider {
 
 func (p *LocalAssetProvider) LoadAssets() ([]ports.PassAsset, error) {
 	requiredFiles := []string{"icon.png", "logo.png"}
+	optionalFiles := []string{"thumbnail.png"}
 
-	assets := make([]ports.PassAsset, 0, len(requiredFiles))
+	assets := make([]ports.PassAsset, 0, len(requiredFiles)+len(optionalFiles))
+
 	for _, name := range requiredFiles {
 		fullPath := filepath.Join(p.dir, name)
 
@@ -31,6 +33,18 @@ func (p *LocalAssetProvider) LoadAssets() ([]ports.PassAsset, error) {
 			Name: name,
 			Data: data,
 		})
+	}
+
+	for _, name := range optionalFiles {
+		fullPath := filepath.Join(p.dir, name)
+
+		data, err := os.ReadFile(fullPath)
+		if err == nil {
+			assets = append(assets, ports.PassAsset{
+				Name: name,
+				Data: data,
+			})
+		}
 	}
 
 	return assets, nil
