@@ -99,17 +99,6 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		generic["auxiliaryFields"] = auxiliaryFields
 	}
 
-	if card.QRCodeContent != "" {
-		payloadBarcode := map[string]any{
-			"message":         card.QRCodeContent,
-			"format":          "PKBarcodeFormatQR",
-			"messageEncoding": "iso-8859-1",
-			"altText":         card.QRCodeContent,
-		}
-		generic["barcode"] = payloadBarcode
-		generic["barcodes"] = []map[string]any{payloadBarcode}
-	}
-
 	payload := map[string]any{
 		"formatVersion":      1,
 		"passTypeIdentifier": p.passTypeID,
@@ -122,6 +111,17 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"labelColor":         firstNonEmpty(card.LabelColor, p.labelColor),
 		"foregroundColor":    firstNonEmpty(card.ForegroundColor, p.foregroundColor),
 		"generic":            generic,
+	}
+
+	if card.QRCodeContent != "" {
+		payloadBarcode := map[string]any{
+			"message":         card.QRCodeContent,
+			"format":          "PKBarcodeFormatQR",
+			"messageEncoding": "iso-8859-1",
+			"altText":         card.QRCodeContent,
+		}
+		payload["barcode"] = payloadBarcode
+		payload["barcodes"] = []map[string]any{payloadBarcode}
 	}
 
 	return json.MarshalIndent(payload, "", "  ")
