@@ -99,6 +99,17 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		generic["auxiliaryFields"] = auxiliaryFields
 	}
 
+	if card.QRCodeContent != "" {
+		payloadBarcode := map[string]any{
+			"message":         card.QRCodeContent,
+			"format":          "PKBarcodeFormatQR",
+			"messageEncoding": "iso-8859-1",
+			"altText":         card.QRCodeContent,
+		}
+		generic["barcode"] = payloadBarcode
+		generic["barcodes"] = []map[string]any{payloadBarcode}
+	}
+
 	payload := map[string]any{
 		"formatVersion":      1,
 		"passTypeIdentifier": p.passTypeID,
@@ -106,10 +117,10 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 		"teamIdentifier":     p.teamID,
 		"organizationName":   p.organizationName,
 		"description":        "Digital business card",
-		"logoText":           card.LogoText,
-		"backgroundColor":    p.backgroundColor,
-		"labelColor":         p.labelColor,
-		"foregroundColor":    p.foregroundColor,
+		"logoText":           firstNonEmpty(card.LogoText),
+		"backgroundColor":    firstNonEmpty(card.BackgroundColor, p.backgroundColor),
+		"labelColor":         firstNonEmpty(card.LabelColor, p.labelColor),
+		"foregroundColor":    firstNonEmpty(card.ForegroundColor, p.foregroundColor),
 		"generic":            generic,
 	}
 
@@ -151,4 +162,13 @@ func generateSerial(card businesscard.BusinessCard) string {
 
 	hash := sha1.Sum([]byte(raw))
 	return hex.EncodeToString(hash[:])
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		if value != "" {
+			return value
+		}
+	}
+	return ""
 }

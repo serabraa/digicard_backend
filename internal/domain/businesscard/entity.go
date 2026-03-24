@@ -3,24 +3,44 @@ package businesscard
 import "strings"
 
 type BusinessCard struct {
-	FullName string
-	Title    string
-	Company  string
-	LogoText string
-	Email    string
-	Phone    string
-	Website  string
+	FullName        string
+	Title           string
+	Company         string
+	LogoText        string
+	Email           string
+	Phone           string
+	Website         string
+	QRCodeContent   string
+	BackgroundColor string
+	ForegroundColor string
+	LabelColor      string
 }
 
-func New(fullName, title, company, logoText, email, phone, website string) (BusinessCard, error) {
+func New(
+	fullName,
+	title,
+	company,
+	logoText,
+	email,
+	phone,
+	website,
+	qrCodeContent,
+	backgroundColor,
+	foregroundColor,
+	labelColor string,
+) (BusinessCard, error) {
 	card := BusinessCard{
-		FullName: strings.TrimSpace(fullName),
-		Title:    strings.TrimSpace(title),
-		Company:  strings.TrimSpace(company),
-		LogoText: strings.TrimSpace(logoText),
-		Email:    strings.TrimSpace(email),
-		Phone:    strings.TrimSpace(phone),
-		Website:  strings.TrimSpace(website),
+		FullName:        strings.TrimSpace(fullName),
+		Title:           strings.TrimSpace(title),
+		Company:         strings.TrimSpace(company),
+		LogoText:        strings.TrimSpace(logoText),
+		Email:           strings.TrimSpace(email),
+		Phone:           strings.TrimSpace(phone),
+		Website:         strings.TrimSpace(website),
+		QRCodeContent:   strings.TrimSpace(qrCodeContent),
+		BackgroundColor: strings.TrimSpace(backgroundColor),
+		ForegroundColor: strings.TrimSpace(foregroundColor),
+		LabelColor:      strings.TrimSpace(labelColor),
 	}
 
 	if err := card.Validate(); err != nil {
