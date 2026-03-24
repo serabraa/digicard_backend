@@ -41,6 +41,8 @@ func (h *GeneratePassHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		req.BackgroundColor,
 		req.ForegroundColor,
 		req.LabelColor,
+		req.LogoImageBase64,
+		req.ThumbnailImageBase64,
 	)
 	if err != nil {
 		writeDomainError(w, err)

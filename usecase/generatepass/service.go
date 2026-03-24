@@ -36,7 +36,7 @@ func (s *Service) Execute(card businesscard.BusinessCard) ([]byte, error) {
 		return nil, fmt.Errorf("build pass json: %w", err)
 	}
 
-	assets, err := s.assetProvider.LoadAssets()
+	assets, err := s.assetProvider.LoadAssets(card)
 	if err != nil {
 		return nil, fmt.Errorf("load assets: %w", err)
 	}
