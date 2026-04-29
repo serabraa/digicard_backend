@@ -118,7 +118,6 @@ func (p *StaticTemplateProvider) BuildPassJSON(card businesscard.BusinessCard) (
 			"message":         card.QRCodeContent,
 			"format":          "PKBarcodeFormatQR",
 			"messageEncoding": "iso-8859-1",
-			"altText":         card.QRCodeContent,
 		}
 		payload["barcode"] = payloadBarcode
 		payload["barcodes"] = []map[string]any{payloadBarcode}
